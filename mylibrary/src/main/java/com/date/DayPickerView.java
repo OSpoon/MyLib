@@ -1,4 +1,4 @@
-package com.frames.spoon.mylibrary.date;
+package com.date;
 
 import android.annotation.TargetApi;
 import android.content.Context;

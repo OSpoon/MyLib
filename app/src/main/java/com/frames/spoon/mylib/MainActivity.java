@@ -5,12 +5,9 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.frames.spoon.mylibrary.AppContext;
-import com.frames.spoon.mylibrary.base.BaseApplication;
-import com.frames.spoon.mylibrary.date.DatePickerDialog;
-import com.frames.spoon.mylibrary.util.StringUtils;
+import com.date.DatePickerDialog;
 
 import java.util.Calendar;
-import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     private final Calendar calendar = Calendar.getInstance();

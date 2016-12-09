@@ -1,4 +1,4 @@
-package com.frames.spoon.mylibrary.date;
+package com.date;
 
 import android.content.Context;
 import android.content.res.Resources;
