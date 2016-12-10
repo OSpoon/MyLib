@@ -25,6 +25,7 @@ import android.os.Looper;
 import android.os.Message;
 
 import com.dtr.zxing.activity.CaptureActivity;
+import com.frames.spoon.mylibrary.R;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.DecodeHintType;
 import com.google.zxing.MultiFormatReader;
@@ -32,8 +33,6 @@ import com.google.zxing.PlanarYUVLuminanceSource;
 import com.google.zxing.ReaderException;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
-
-import net.oschina.app.R;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Map;
@@ -55,14 +54,13 @@ public class DecodeHandler extends Handler {
 		if (!running) {
 			return;
 		}
-		switch (message.what) {
-		case R.id.decode:
+		if (message.what == R.id.decode) {
 			decode((byte[]) message.obj, message.arg1, message.arg2);
-			break;
-		case R.id.quit:
+
+		} else if (message.what == R.id.quit) {
 			running = false;
 			Looper.myLooper().quit();
-			break;
+
 		}
 	}
 

@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="Base.App.Theme.NoTitle" parent="@style/Theme.AppCompat.Light">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
     <style name="App.Theme.Dialog.Alert" parent="ThemeOverlay.AppCompat.Dialog.Alert">
         <item name="android:textColorPrimary">#f0000000</item>
     </style>
+
+    <style name="App.Theme.Tweet.Main" parent="Base.App.Theme.NoTitle"/>
 
 </resources>

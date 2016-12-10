@@ -27,8 +27,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.dtr.zxing.activity.CaptureActivity;
-
-import net.oschina.app.R;
+import com.frames.spoon.mylibrary.R;
 
 import java.io.Closeable;
 import java.io.IOException;

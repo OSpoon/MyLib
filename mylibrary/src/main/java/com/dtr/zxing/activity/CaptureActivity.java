@@ -16,11 +16,15 @@
 package com.dtr.zxing.activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.text.ClipboardManager;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -39,7 +43,6 @@ import com.dtr.zxing.utils.BeepManager;
 import com.dtr.zxing.utils.CaptureActivityHandler;
 import com.dtr.zxing.utils.InactivityTimer;
 import com.frames.spoon.mylibrary.AppContext;
-import com.frames.spoon.mylibrary.AppOperator;
 import com.frames.spoon.mylibrary.R;
 import com.google.zxing.Result;
 
@@ -59,7 +62,8 @@ import pub.devrel.easypermissions.EasyPermissions;
  * @author dswitkin@google.com (Daniel Switkin)
  * @author Sean Owen
  */
-public final class CaptureActivity extends AppCompatActivity implements SurfaceHolder.Callback, EasyPermissions.PermissionCallbacks, View.OnClickListener {
+public final class CaptureActivity extends AppCompatActivity implements
+        SurfaceHolder.Callback, EasyPermissions.PermissionCallbacks, View.OnClickListener {
 
     private static final String TAG = CaptureActivity.class.getSimpleName();
 
@@ -79,11 +83,16 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_qr_scan);
+
         scanPreview = (SurfaceView) findViewById(R.id.capture_preview);
+        // Install the callback and wait for surfaceCreated() to init the
+        // camera.
         scanPreview.getHolder().addCallback(this);
+
         cameraTask();
     }
 
@@ -92,6 +101,9 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
         if (scanPreview != null) {
             handler = null;
             if (isHasSurface) {
+                // The activity was paused but not stopped, so the surface still
+                // exists. Therefore
+                // surfaceCreated() won't be called, so init the camera here.
                 initCamera(scanPreview.getHolder());
             }
         }
@@ -140,6 +152,7 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
 
     private boolean isHasSurface = false;
 
+
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         if (holder == null) {
@@ -157,6 +170,7 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width,
                                int height) {
+        // Doing
     }
 
     /**
@@ -190,6 +204,7 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
     private void handleText(String text) {
         AppContext.showToast(text);
     }
+
 
     private void initCamera(SurfaceHolder surfaceHolder) {
         if (cameraManager == null)
@@ -287,6 +302,7 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
         int i = v.getId();
         if (i == R.id.capture_flash) {
             light();
+
         } else {
         }
     }
@@ -352,6 +368,8 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        // EasyPermissions handles the request result.
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
@@ -365,8 +383,7 @@ public final class CaptureActivity extends AppCompatActivity implements SurfaceH
             initCamera();
         } else {
             // Request one permission
-            EasyPermissions.requestPermissions(this,
-                    "请求获取相机权限",
+            EasyPermissions.requestPermissions(this, "请求获取相机权限",
                     CAMERA_PERM, perms);
         }
     }
